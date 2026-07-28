@@ -12,7 +12,7 @@ Praktické návody pro práci s obsahem:
 - spouštění a kontrola procesů
 - řešení běžných problémů v Admin Clientu
 
-👉 viz **[Návody kurátor](curator/index.md)**
+➡️ viz **[Návody kurátor](curator/index.md)**
 
 ---
 
@@ -24,7 +24,7 @@ Návody pro instalaci a provoz systému:
 - aktualizace, zálohování a monitoring
 - provozní scénáře
 
-👉 viz **[Návody administrátor](admin/index.md)**
+➡️ viz **[Návody administrátor](admin/index.md)**
 
 ---
 
@@ -36,7 +36,7 @@ Návody pro vývoj a integraci:
 - integrační scénáře
 - testování a ladění
 
-👉 viz **[Návody vyvojár](developer/index.md)**
+➡️ viz **[Návody vyvojár](developer/index.md)**
 
 ---
 
@@ -72,19 +72,6 @@ Guides často:
 
 ---
 
-## Co Návody záměrně neobsahují
-
-Návody:
-- nejsou úplným popisem systému
-- nenahrazují referenční dokumentaci
-- nepopisují interní implementaci
-
-Pokud hledáte:
-- **co je to za pojem** → jděte do *Zakladni pojmy*
-- **přesnou syntaxi, API nebo konfiguraci** → jděte do *Reference*
-- **ucelený reálný příběh napříč systémem** → jděte do *Scenare*
-
----
 
 ## Navazujici dokumentace
 
