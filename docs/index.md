@@ -11,6 +11,7 @@ až po vývoj a integraci jednotlivých komponent.
 
 ---
 
+<!-- llm:exclude:start -->
 ## Kde začít?
 
 <div class="grid cards" markdown>
@@ -96,6 +97,7 @@ až po vývoj a integraci jednotlivých komponent.
     [:octicons-arrow-right-24: Verzování](versioning/index.md)
 
 </div>
+<!-- llm:exclude:end -->
 
 ## Co je Kramerius
 

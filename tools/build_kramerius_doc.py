@@ -1,5 +1,25 @@
 #!/usr/bin/env python3
 
+# Sestaví jeden Markdown dokument určený jako znalostní podklad pro LLM.
+#
+# Postup zpracování:
+# 1. Načte argumenty, určí kořen projektu, cílový soubor a čas sestavení.
+# 2. Rekurzivně najde *.md soubory v docs/, vynechá cílový soubor a cesty
+#    uvedené v EXCLUDED_MARKDOWN_PATH_PREFIXES.
+# 3. Soubory přirozeně seřadí podle adresářové hierarchie; index.md je vždy
+#    první v příslušném adresáři.
+# 4. Každý soubor načte jako UTF-8 s volitelným BOM a v tomto pořadí:
+#    a) odstraní bloky mezi <!-- llm:exclude:start --> a
+#       <!-- llm:exclude:end --> a ověří správné párování markerů,
+#    b) odstraní úvodní breadcrumb tvořený Markdown odkazy,
+#    c) odstraní samostatné horizontální oddělovače --- mimo bloky kódu
+#       a nadbytečné prázdné řádky v jejich bezprostředním okolí.
+# 5. Po provedení filtrů přeskočí prázdné dokumenty.
+# 6. Před každý zahrnutý dokument vloží jeho relativní cestu a URL vytvořenou
+#    z DOCUMENTATION_BASE_URL_PLACEHOLDER, potom připojí filtrovaný obsah.
+# 7. Na začátek přidá čas sestavení, výsledek zapíše v UTF-8 a vypíše počty
+#    zahrnutých, prázdných a cestou vyloučených Markdown souborů.
+#
 # python .\tools\build_kramerius_doc.py
 # output: .\out\kramerius-doc.md
 
@@ -15,49 +35,17 @@ from urllib.parse import quote
 
 DEFAULT_OUTPUT_NAME = "kramerius-doc.md"
 DEFAULT_OUTPUT_DIR = "out"
-INDEX_SEARCH_SECTION_HEADING = "## 🔍 Hledání v dokumentaci"
+LLM_EXCLUDE_START_MARKER = "<!-- llm:exclude:start -->"
+LLM_EXCLUDE_END_MARKER = "<!-- llm:exclude:end -->"
 DOCUMENTATION_BASE_URL_PLACEHOLDER = "{{KRAMERIUS_DOCUMENTATION_BASE_URL}}"
 EXCLUDED_MARKDOWN_PATH_PREFIXES = (PurePosixPath("assets/mermaid"),)
-
-DOCS_SECTION_ORDER = {
-    "getting-started": 10,
-    "core-concepts": 20,
-    "domain-concepts": 30,
-    "architecture": 40,
-    "configuration": 50,
-    "deployment": 60,
-    "guides": 70,
-    "scenarios": 80,
-    "reference": 90,
-}
-
-SECTION_CHILD_ORDER = {
-    ("getting-started",): {
-        "index.md": 0,
-        "curator.md": 10,
-        "admin.md": 20,
-        "developer.md": 30,
-    },
-    ("guides",): {
-        "index.md": 0,
-        "curator": 10,
-        "admin": 20,
-        "developer": 30,
-    },
-    ("reference",): {
-        "index.md": 0,
-        "security": 10,
-    },
-    ("reference", "security"): {
-        "index.md": 0,
-        "authentication": 10,
-        "authorization": 20,
-        "actions": 30,
-        "criteria": 40,
-        "data-model": 50,
-        "api.md": 60,
-    },
-}
+BREADCRUMB_PATTERN = re.compile(
+    r"^\[Úvod\]\([^\r\n)]+\)"
+    r"(?:\s*(?:>|/)\s*\[[^\]\r\n]+\]\([^\r\n)]+\))+\s*$",
+    flags=re.IGNORECASE,
+)
+FENCE_PATTERN = re.compile(r"^\s*(`{3,}|~{3,})")
+HORIZONTAL_RULE_PATTERN = re.compile(r"^ {0,3}---[ \t]*$")
 
 
 def natural_key(value: str) -> tuple[object, ...]:
@@ -67,59 +55,14 @@ def natural_key(value: str) -> tuple[object, ...]:
 
 def markdown_sort_key(path: Path, docs_root: Path) -> tuple[object, ...]:
     relative = path.relative_to(docs_root)
-    lower_parts = tuple(part.casefold() for part in relative.parts)
-
-    if lower_parts == ("index.md",):
-        return (0,)
-
-    if len(lower_parts) == 1:
-        return (950, path_components_key(lower_parts))
-
-    section = lower_parts[0]
-    section_order = DOCS_SECTION_ORDER.get(section, 900)
-    return (
-        section_order,
-        section_child_order_key(lower_parts),
-        path_components_key(lower_parts[1:]),
-    )
-
-
-def section_child_order_key(parts: tuple[str, ...]) -> tuple[int, str]:
-    matched_prefix: tuple[str, ...] | None = None
-    matched_child_order: dict[str, int] | None = None
-
-    for prefix, child_order in SECTION_CHILD_ORDER.items():
-        if parts[: len(prefix)] != prefix:
-            continue
-
-        if matched_prefix is None or len(prefix) > len(matched_prefix):
-            matched_prefix = prefix
-            matched_child_order = child_order
-
-    if matched_prefix is None or matched_child_order is None:
-        return (900, "")
-
-    if len(parts) == len(matched_prefix):
-        return (0, "")
-
-    child = parts[len(matched_prefix)]
-    return (matched_child_order.get(child, 900), child)
-
-
-
-def path_components_key(parts: tuple[str, ...]) -> tuple[object, ...]:
     key: list[object] = []
 
-    for index, part in enumerate(parts):
-        is_last = index == len(parts) - 1
-        if is_last and part in {"index.md", "readme.md"}:
-            priority = 0
-        elif is_last:
-            priority = 1
+    for index, part in enumerate(relative.parts):
+        is_file_name = index == len(relative.parts) - 1
+        if is_file_name and part.casefold() == "index.md":
+            key.append((0, ()))
         else:
-            priority = 2
-
-        key.append((priority, natural_key(part)))
+            key.append((1, natural_key(part)))
 
     return tuple(key)
 
@@ -154,25 +97,125 @@ def collect_markdown_files(docs_root: Path, output_path: Path) -> tuple[list[Pat
     return files, excluded_count
 
 
-def remove_index_search_section(text: str) -> str:
-    section_start = text.find(INDEX_SEARCH_SECTION_HEADING)
-    if section_start == -1:
-        return text
+def remove_llm_excluded_blocks(text: str, path: Path) -> str:
+    included_lines: list[str] = []
+    exclusion_start_line: int | None = None
 
-    section_end_match = re.search(r"^---\s*$", text[section_start:], flags=re.MULTILINE)
-    if section_end_match is None:
+    for line_number, line in enumerate(text.splitlines(keepends=True), start=1):
+        stripped_line = line.strip()
+
+        if stripped_line == LLM_EXCLUDE_START_MARKER:
+            if exclusion_start_line is not None:
+                raise ValueError(
+                    f"Vnorena LLM exclude sekce v {path} na radku {line_number}; "
+                    f"predchozi sekce zacala na radku {exclusion_start_line}."
+                )
+
+            exclusion_start_line = line_number
+            continue
+
+        if stripped_line == LLM_EXCLUDE_END_MARKER:
+            if exclusion_start_line is None:
+                raise ValueError(
+                    f"Ukoncovaci LLM exclude marker bez zacatku v {path} "
+                    f"na radku {line_number}."
+                )
+
+            exclusion_start_line = None
+            continue
+
+        if (
+            LLM_EXCLUDE_START_MARKER in line
+            or LLM_EXCLUDE_END_MARKER in line
+        ):
+            raise ValueError(
+                f"LLM exclude marker musi byt na samostatnem radku v {path} "
+                f"na radku {line_number}."
+            )
+
+        if exclusion_start_line is None:
+            included_lines.append(line)
+
+    if exclusion_start_line is not None:
         raise ValueError(
-            f"Sekce '{INDEX_SEARCH_SECTION_HEADING}' nema ukoncovaci oddelovac '---'."
+            f"Neukoncena LLM exclude sekce v {path}; "
+            f"zacala na radku {exclusion_start_line}."
         )
 
-    section_end = section_start + section_end_match.end()
-    return text[:section_start].rstrip() + "\n\n" + text[section_end:].lstrip()
+    return "".join(included_lines)
+
+
+def remove_leading_breadcrumb(text: str) -> str:
+    lines = text.splitlines()
+    first_content_index = next(
+        (index for index, line in enumerate(lines) if line.strip()),
+        None,
+    )
+    if first_content_index is None:
+        return text
+
+    if BREADCRUMB_PATTERN.fullmatch(lines[first_content_index].strip()) is None:
+        return text
+
+    del lines[first_content_index]
+    while first_content_index < len(lines) and not lines[first_content_index].strip():
+        del lines[first_content_index]
+
+    return "\n".join(lines)
+
+
+def remove_horizontal_rules(text: str) -> str:
+    included_lines: list[str] = []
+    fence_character: str | None = None
+    fence_length = 0
+    removed_rule_pending = False
+
+    for line in text.splitlines(keepends=True):
+        fence_match = FENCE_PATTERN.match(line)
+        if fence_match is not None:
+            if removed_rule_pending:
+                if included_lines:
+                    included_lines.append("\n")
+                removed_rule_pending = False
+
+            marker = fence_match.group(1)
+            if fence_character is None:
+                fence_character = marker[0]
+                fence_length = len(marker)
+            elif marker[0] == fence_character and len(marker) >= fence_length:
+                fence_character = None
+                fence_length = 0
+
+            included_lines.append(line)
+            continue
+
+        if (
+            fence_character is None
+            and HORIZONTAL_RULE_PATTERN.fullmatch(line.rstrip("\r\n")) is not None
+        ):
+            while included_lines and not included_lines[-1].strip():
+                included_lines.pop()
+            removed_rule_pending = True
+            continue
+
+        if removed_rule_pending:
+            if not line.strip():
+                continue
+
+            if included_lines:
+                included_lines.append("\n")
+            removed_rule_pending = False
+
+        included_lines.append(line)
+
+    return "".join(included_lines)
 
 
 def read_non_empty_text(path: Path, docs_root: Path) -> str | None:
     text = path.read_text(encoding="utf-8-sig")
-    if path.relative_to(docs_root).as_posix() == "index.md":
-        text = remove_index_search_section(text)
+    text = remove_llm_excluded_blocks(text, path)
+    text = remove_leading_breadcrumb(text)
+    text = remove_horizontal_rules(text)
 
     if not text.strip():
         return None
