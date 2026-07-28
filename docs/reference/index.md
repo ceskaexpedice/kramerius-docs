@@ -10,7 +10,7 @@ Systém obsahuje následující komponenty:
 
 | Komponenta          | Účel                             | Zdroj                                                                                                                | Verze         | Distribuce |
 |---------------------|----------------------------------|----------------------------------------------------------------------------------------------------------------------|---------------|------------|
-| Kramerius Core      | REST API, integrace              | [https://github.com/ceskaexpedice/kramerius](https://github.com/ceskaexpedice/kramerius)                             | 7.2.2         | Kramerius  |
+| Kramerius Core      | REST API, integrace              | [https://github.com/ceskaexpedice/kramerius](https://github.com/ceskaexpedice/kramerius)                             | 7.2.1       | Kramerius  |
 | Reader UI           | uživatelské rozhraní pro čtenáře | [https://github.com/ceskaexpedice/kramerius-web-client-v3](https://github.com/ceskaexpedice/kramerius-web-client-v3) | 3.0.20-beta   | Kramerius  |
 | Admin UI            | administrace systému             | [https://github.com/ceskaexpedice/kramerius-admin-client](https://github.com/ceskaexpedice/kramerius-admin-client)   | 1.6.1         | Kramerius  |
 | Keycloak            | autentizace                      | [https://www.keycloak.org/](https://www.keycloak.org/)                                                               | 22.0.11-1.10  | Kramerius|
@@ -20,6 +20,10 @@ Systém obsahuje následující komponenty:
 | Process Platform    | orchestrace background procesů   | [https://github.com/ceskaexpedice/process-platform](https://github.com/ceskaexpedice/process-platform)               | 1.5.1         |Kramerius|
 | PostgreSQL          | persistence                      | [https://www.postgresql.org/](https://www.postgresql.org/)                                                           | 14.10         |Oficialni|
 | Hazelcast           | distribuované zámky              | [https://github.com/ceskaexpedice/hazelcast-locks-server](https://github.com/ceskaexpedice/hazelcast-locks-server)   | 2.0           |Kramerius|
+
+Minimální doporučená verze jádra pro ČDK:   7.2.1
+
+Minimální doporučená verze jádra pro SDNNT: 7.2.1
 
 ---
 
