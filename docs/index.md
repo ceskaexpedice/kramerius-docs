@@ -11,127 +11,91 @@ až po vývoj a integraci jednotlivých komponent.
 
 ---
 
-<style>
-  .doc-chat-launch {
-    margin: 8px 0 12px;
-  }
+## Kde začít?
 
-  .doc-chat-launch__button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
-    border: 0;
-    border-radius: 4px;
-    padding: 0 16px;
-    background: #1f6feb;
-    color: #fff;
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
-  }
+<div class="grid cards" markdown>
 
-  .doc-chat-launch__button:hover {
-    background: #1a5fc8;
-  }
+-   :fontawesome-solid-book:{ .lg .middle } __Kurátor / práce s dokumenty__
 
-  .doc-chat-launch__button:focus-visible {
-    outline: 3px solid rgba(31, 111, 235, 0.32);
-    outline-offset: 3px;
-  }
-</style>
+    ---
 
-<div class="doc-chat-launch">
-  <button type="button" class="doc-chat-launch__button" onclick="window.openKrameriusDocChat()">🤖 Zeptat se AI asistenta</button>
+    Import dokumentů, indexace, práce se sbírkami, sledování procesů a zapojení knihovny do ČDK.
+
+    [:octicons-arrow-right-24: Návody pro kurátory](guides/curator/index.md)
+
+-   :fontawesome-solid-server:{ .lg .middle } __Administrátor / provoz systému__
+
+    ---
+
+    Správa procesů, konfigurace, monitoring a nasazení systému Kramerius.
+
+    [:octicons-arrow-right-24: Návody pro administrátory](guides/admin/index.md)
+
+-   :fontawesome-solid-code:{ .lg .middle } __Vývojář / integrace__
+
+    ---
+
+    REST API, datové modely, formáty, komponenty systému a jejich vzájemné vazby.
+
+    [:octicons-arrow-right-24: Informace pro vývojáře](getting-started/developer.md)
+
 </div>
 
-<kramerius-doc-chat api-url="https://ai-api.inovatika.dev/kramerius-doc-api/" use-mock-response=false></kramerius-doc-chat>
-<script>
-  window.openKrameriusDocChat = function () {
-    if (!window.krameriusDocChat) {
-      throw new Error('Kramerius doc chat neni nacteny.');
-    }
+## Přehled dokumentace
 
-    window.krameriusDocChat.open();
-  };
-</script>
-<script type="module" src="assets/kramerius-doc-chat-ui/doc-chat-ui.js"></script>
+<div class="grid cards" markdown>
 
-> Tip: Můžete hledat „jak importovat dokument“, „co je metadata“, „problém s indexací“ apod.
+-   :fontawesome-solid-circle-info:{ .lg .middle } __Doménové pojmy__
 
----
+    ---
 
-## Kurátor / práce s dokumenty
+    Dokumenty, metadata, sbírky, licence, importy a další základní pojmy systému.
 
-Práce s digitálními dokumenty, sbírkami a jejich zpracováním.
+    [:octicons-arrow-right-24: Zobrazit pojmy](domain-concepts/index.md)
 
-👉 **[Návody pro kurátory](guides/curator/index.md)**
-- import dokumentů
-- indexace
-- práce se sbírkami
-- sledování procesů
-- zapojení knihovny do ČDK
+-   :fontawesome-solid-book:{ .lg .middle } __Návody__
 
-👉 **[Doménové pojmy](domain-concepts/index.md)**
-- dokument
-- metadata
-- sbírka
-- licence
-- import
+    ---
 
----
+    Praktické postupy pro kurátory, administrátory a vývojáře.
 
-## Administrátor / provoz systému
+    [:octicons-arrow-right-24: Zobrazit návody](guides/index.md)
 
-Správa systému, procesů a konfigurace.
+-   :fontawesome-solid-code:{ .lg .middle } __Technické koncepty__
 
-👉 **[Návody pro administrátora](guides/admin/index.md)**
-- monitoring procesů
-- správa běžících úloh
-- konfigurace systému
+    ---
 
-👉 **[Konfigurace](configuration/index.md)**
-- nastavení Krameria
-- indexace
-- storage a úložiště
+    Akubra, procesní platforma, vyhledávání, zabezpečení, ČDK a API.
 
-👉 **[Deployment](deployment/index.md)**
-- nasazení systému
-- runtime prostředí
-- Tomcat / služby
+    [:octicons-arrow-right-24: Zobrazit koncepty](core-concepts/index.md)
 
----
+-   :fontawesome-solid-sitemap:{ .lg .middle } __Architektura__
 
-## Vývojář / integrace
+    ---
 
-Integrace, API a interní fungování systému.
+    Komponenty systému Kramerius, jejich odpovědnosti a vzájemné vazby.
 
-👉 **[Reference](reference/index.md)**
-- REST API
-- datové modely
-- formáty (FOXML, METS)
+    [:octicons-arrow-right-24: Zobrazit architekturu](architecture/index.md)
 
-👉 **[Technické koncepty](core-concepts/index.md)**
-- Akubra
-- procesní platforma
-- indexace
-- security model
+-   :fontawesome-solid-server:{ .lg .middle } __Konfigurace a nasazení__
 
-👉 **[Architektura](architecture/index.md)**
-- komponenty systému
-- vazby mezi moduly
+    ---
 
----
+    Nastavení jednotlivých komponent a provoz v Dockeru, Kubernetes i on-premise.
 
-## Rychlé vstupy
+    [:octicons-arrow-right-24: Konfigurace](configuration/index.md)
+    [:octicons-arrow-right-24: Nasazení](deployment/index.md)
 
-Pokud víte, co hledáte:
+-   :fontawesome-solid-book-open:{ .lg .middle } __Reference a verzování__
 
-- [Doménové pojmy](domain-concepts/index.md)
-- [Technické koncepty](core-concepts/index.md)
-- [Návody](guides/index.md)
-- [Reference](reference/index.md)
-- [Verzovani](versioning/index.md)
+    ---
+
+    Detailní technická reference, kompatibilita komponent a pravidla vydávání.
+
+    [:octicons-arrow-right-24: Reference](reference/index.md)
+    [:octicons-arrow-right-24: Verzování](versioning/index.md)
+
+</div>
 
 ## Co je Kramerius
 

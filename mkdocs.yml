@@ -1,15 +1,12 @@
 site_name: Kramerius – dokumentace
 site_description: Produktová a technická dokumentace systému Kramerius
-site_url: https://ceskaexpedice.github.io/misc/
-repo_url: https://github.com/ceskaexpedice/misc
-repo_name: ceskaexpedice/misc
+site_url: https://ceskaexpedice.github.io/kramerius-docs/
 
 theme:
   name: material
   language: cs
-  icon:
-    logo: material/library-shelves
-    repo: fontawesome/brands/github
+  logo: assets/img/kramerius_logo.png
+  favicon: assets/img/kramerius_logo.png
   font:
     text: Roboto
     code: Red Hat Mono
@@ -38,6 +35,12 @@ theme:
     - search.suggest
     - search.highlight
     - content.code.copy
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - assets/kramerius-doc-chat-launcher.js
 
 nav:
   - Úvod:
@@ -100,7 +103,7 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/ceskaexpedice/misc
+      link: https://github.com/ceskaexpedice/kramerius-docs
       name: Projekt na GitHubu
 
 copyright: Copyright &copy; 2026 Česká digitální knihovna
