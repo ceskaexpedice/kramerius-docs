@@ -1,0 +1,41 @@
+name: Publish Kramerius documentation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Build and publish documentation
+    runs-on: ubuntu-latest
+
+    env:
+      KRAMERIUS_DOC_API_URL: ${{ secrets.KRAMERIUS_DOC_API_URL }}
+      KRAMERIUS_DOC_API_KEY: ${{ secrets.KRAMERIUS_DOC_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build documentation
+        run: python tools/build_kramerius_doc.py
+
+      - name: Upload generated documentation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kramerius-doc
+          path: out/kramerius-doc.md
+          if-no-files-found: error
+
+      - name: Publish documentation to API
+        run: python tools/publish_kramerius_doc.py --input out/kramerius-doc.md
