@@ -66,6 +66,9 @@ Referenční popis klientské aplikace pro koncové uživatele. Obsahuje archite
 ### [Admin klient](client-admin/index.md)
 Administrátorské rozhraní klientské aplikace. Slouží ke správě uživatelů, oprávnění a systémových nastavení.
 
+### [Verzování](../versioning/index.md)
+Verze komponent
+
 ---
 
 ## Operations

@@ -98,7 +98,8 @@ nav:
       - ČDK: reference/cdk/index.md
       - Web klient: reference/client/index.md
       - Admin klient: reference/client-admin/index.md
-  - Verzování: versioning/index.md
+      - Verzování: versioning/index.md
+  - O projektu: about.md
 
 extra:
   social:

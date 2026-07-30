@@ -3,10 +3,6 @@
 Kramerius je ekosystém vzájemně spolupracujících aplikací, nikoliv jeden samostatný software. Kromě **Kramerius Core** zahrnuje také další samostatně vyvíjené komponenty, například **Process Platform** nebo **Akubra**. 
 Každá z těchto komponent má vlastní životní cyklus a vlastní schéma verzování.
 
-## [➡️ Tabulka komponent a verzí](../reference/index.md)
-
-Uvádíme vždy nejnovější "stable" verze.
-
 ## Kramerius Core
 
 Kramerius Core používá čtyřdílné číslo verze:
