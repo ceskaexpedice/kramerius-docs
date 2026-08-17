@@ -21,6 +21,7 @@ Konfiguruje se Web klient a jeho zdroje (resources)
 ### Konfigurace
 
 V této sekci se konfigurují základní 3 části konfigurace web klienta:
+
 - [Hlavní konfigurační soubor](https://github.com/ceskaexpedice/kramerius-web-client-v3/wiki/Hlavn%C3%AD-konfigura%C4%8Dn%C3%AD-soubor)
 - [Konfigurace úvodní strany](https://github.com/ceskaexpedice/kramerius-web-client-v3/wiki/Konfigurace-%C3%BAvodn%C3%AD-strany)
 - [Konfigurace licencí](https://github.com/ceskaexpedice/kramerius-web-client-v3/wiki/Konfigurace-licenc%C3%AD)
