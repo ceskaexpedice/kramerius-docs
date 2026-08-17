@@ -9,14 +9,15 @@ Workflow vždy popisuje **celý proces od začátku do konce**, například impo
 ### [Sbírky](collections.md)
 Vytváření a úprava sbírek
 
-### [Zpracování nové dávky (Import + indexace)](import-index-dataset.md)
-Kompletní proces zpracování nové digitální dávky
-
 ### [Zapojení knihovny do ČDK](library-cdk-onboarding-guide.md)
 Jak zapojit knihovnu do ČDK
 
 ### [Zapojení knihovny do SDNNT](dnnt-onboarding.md)
 Jak zapojit knihovnu do SDNNT
+
+### [Zpracování nové dávky (Import + indexace)](import-index-dataset.md)
+Kompletní proces zpracování nové digitální dávky
+
 
 ---
 

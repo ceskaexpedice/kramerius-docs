@@ -65,7 +65,7 @@ Tyto komponenty mají vlastní konfigurační mechanismy a často i vlastní dok
 ### [CDK](core/configuration-properties/configuration-cdk.md)
 Konfigurace se děje skrze Kramerius Core
 
-### [Web klient](https://github.com/ceskaexpedice/kramerius-web-client-v3/wiki)
+### [Web klient](client/index.md)
 - hlavní konfigurace
 - úvodní stránka
 - licence

@@ -20,7 +20,7 @@ Globální licence jsou následující:
 
 ### Lokální licence 
 
-Lokální licence mají platnost jenom v rámce dané instituce a vyznačují se tím, že mají prefix organizace. Například u knihovny akademie věd by taková licence byla `knav_pracovisteAV`.  Zkratka instituce by měla korespondovat s [registrem kramériů](https://registr.digitalniknihovna.cz/).  Zkratku je nutno nastavit v konfigurační proměnné `acronym=<zkrakta instituce>` v souboru `configuration.properties`.
+Lokální licence mají platnost jenom v rámce dané instituce a vyznačují se tím, že mají prefix organizace. Například u knihovny akademie věd by taková licence byla `knav_pracovisteAV`.  Zkratka instituce by měla korespondovat s [registrem kramériů](https://registr.digitalniknihovna.cz/).  Zkratku je nutno nastavit v konfigurační proměnné `acronym=<zkrakta instituce>` v souboru [configuration.properties](../../configuration/core/configuration-properties/index.md).
 
 Upozornění: _V administračním rozhraní lze nyní zakládat pouze **lokální** licence a prefix je automaticky dodávan admin rozhraním._
  

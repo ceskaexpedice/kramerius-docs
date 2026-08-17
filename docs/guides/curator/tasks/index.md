@@ -6,6 +6,8 @@ Tato sekce obsahuje jednotlivé kroky, které provádí kurátor při práci se 
 
 Každý task je samostatná činnost, kterou lze provést nezávisle nebo jako součást workflow.
 
+### [Konfigurace Web klienta](ui-config.md)
+
 ### [Spuštění importu](import.md)
 
 ### [Spuštění indexace](indexing.md)
