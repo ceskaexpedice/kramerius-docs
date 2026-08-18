@@ -70,6 +70,8 @@ Konfigurace se děje skrze Kramerius Core
 - úvodní stránka
 - licence
 
+### [Admin klient](client-admin/index.md)
+
 ---
 
 ## Konfigurace v Docker nasazení ([Deployment](../deployment/docker/index.md))

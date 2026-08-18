@@ -81,6 +81,7 @@ nav:
       - Image server: configuration/iiif/index.md
       - ČDK: configuration/core/configuration-properties/configuration-cdk.md
       - Web klient: configuration/client/index.md
+      - Admin klient: configuration/client-admin/index.md
   - Nasazení:
       - Přehled: deployment/index.md
       - Docker: deployment/docker/index.md
