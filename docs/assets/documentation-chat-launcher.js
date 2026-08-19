@@ -1,9 +1,10 @@
 (() => {
   "use strict";
 
-  const chatElementName = "kramerius-doc-chat";
-  const chatApiUrl = "https://ai-api.inovatika.dev/kramerius-doc-api/";
-  const chatStateChangeEventName = "kramerius-doc-chat-state-change";
+  const chatElementName = "documentation-chat";
+  // const chatApiUrl = "https://ai-api.inovatika.dev/documentation-chat-api/";
+  const chatApiUrl = "http://localhost:8080/documentation-chat-api/";
+  const chatStateChangeEventName = "documentation-chat-state-change";
   const scrollLockClassName = "doc-chat-open";
   const launcherScript = document.currentScript;
 
@@ -40,12 +41,12 @@
 
   const chatElement = document.createElement(chatElementName);
   chatElement.setAttribute("api-url", chatApiUrl);
+  chatElement.setAttribute("assistant-id", "kramerius");
   chatElement.setAttribute(
     "logo-url",
     new URL("img/kramerius_logo.png", launcherScript.src).href,
   );
   chatElement.setAttribute("use-mock-response", "false");
-  chatElement.setAttribute("use-placeholder-response", "true");
 
   document.body.append(launcher, chatElement);
 
@@ -106,7 +107,7 @@
   const componentScript = document.createElement("script");
   componentScript.type = "module";
   componentScript.src = new URL(
-    "kramerius-doc-chat-ui/doc-chat-ui.js",
+    "documentation-chat-ui/documentation-chat-ui.js",
     launcherScript.src,
   ).href;
   componentScript.addEventListener(
@@ -119,7 +120,7 @@
   document.head.append(componentScript);
 
   customElements.whenDefined(chatElementName).then(() => {
-    chatApi = window.krameriusDocChat ?? null;
+    chatApi = window.documentationChat ?? null;
     applyChatState(requireChatApi().isOpen());
     launcherButton.disabled = false;
     launcherButton.removeAttribute("aria-busy");

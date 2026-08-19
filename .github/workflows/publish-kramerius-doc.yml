@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      KRAMERIUS_DOC_API_URL: ${{ secrets.KRAMERIUS_DOC_API_URL }}
-      KRAMERIUS_DOC_API_KEY: ${{ secrets.KRAMERIUS_DOC_API_KEY }}
+      DOC_CHAT_API_URL: ${{ secrets.DOC_CHAT_API_URL }}
+      DOC_CHAT_API_KEY: ${{ secrets.DOC_CHAT_API_KEY }}
 
     steps:
       - name: Checkout repository

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 # Krok 1: Nacte vybuildenou markdown dokumentaci z ./out/kramerius-doc.md, pokud neni pres --input zadana jina cesta.
-# Krok 2: Zjisti cilovy API endpoint a API klic. Nejdriv pouzije argumenty prikazove radky, potom env promenne
-#         KRAMERIUS_DOC_API_URL a KRAMERIUS_DOC_API_KEY, a nakonec fallback config z ~/.kramerius-doc-chat/doc_chat_api.json.
-# Krok 3: Odesle dokumentaci jako JSON {"text": "..."} metodou POST na endpoint /api/kramerius-doc.
+# Krok 2: Zjisti base URL API a API klic. Nejdriv pouzije argumenty prikazove radky, potom env promenne
+#         DOC_CHAT_API_URL a DOC_CHAT_API_KEY, a nakonec fallback config z ~/.documentation-chat-api/doc_chat_api.json.
+# Krok 3: Odesle dokumentaci jako JSON {"text": "..."} metodou PUT na endpoint
+#         /api/assistants/kramerius/documents/kramerius.
 # Krok 4: Vypise JSON odpoved serveru, nebo skonci explicitni chybou pri chybejicim vstupu, konfiguraci nebo neuspesnem HTTP volani.
 
 from __future__ import annotations
@@ -19,11 +20,11 @@ from pathlib import Path
 
 
 DEFAULT_INPUT_PATH = Path("out") / "kramerius-doc.md"
-DEFAULT_CONFIG_PATH = Path.home() / ".kramerius-doc-chat" / "doc_chat_api.json"
+DEFAULT_CONFIG_PATH = Path.home() / ".documentation-chat-api" / "doc_chat_api.json"
 DEFAULT_TIMEOUT_SECONDS = 60
-ENDPOINT_PATH = "/api/kramerius-doc"
-ENV_API_URL = "KRAMERIUS_DOC_API_URL"
-ENV_API_KEY = "KRAMERIUS_DOC_API_KEY"
+ENDPOINT_PATH = "/api/assistants/kramerius/documents/kramerius"
+ENV_API_URL = "DOC_CHAT_API_URL"
+ENV_API_KEY = "DOC_CHAT_API_KEY"
 
 
 @dataclass(frozen=True)
@@ -97,7 +98,7 @@ def publish_documentation(api_url: str, api_key: str, text: str, timeout_seconds
             "Accept": "application/json",
             "X-API-Key": api_key,
         },
-        method="POST",
+        method="PUT",
     )
 
     try:
@@ -127,7 +128,7 @@ def publish_documentation(api_url: str, api_key: str, text: str, timeout_seconds
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Odesle vybuildenou Kramerius dokumentaci do kramerius-doc-chat API."
+        description="Odesle vybuildenou Kramerius dokumentaci do documentation-chat API."
     )
     parser.add_argument(
         "--input",
@@ -144,12 +145,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--base-url",
         default=None,
-        help="Base URL kramerius-doc-chat API. Pokud neni zadana, pouzije se pole 'url' z konfigurace.",
+        help=f"Base URL documentation-chat API. Pokud neni zadana, pouzije se env {ENV_API_URL}, pripadne konfigurace.",
     )
     parser.add_argument(
         "--api-url",
         default=None,
-        help=f"Kompletni upload endpoint. Pokud neni zadan, pouzije se env {ENV_API_URL}, pripadne konfigurace.",
+        help="Kompletni upload endpoint. Pokud je zadan, ma prednost pred --base-url, env a konfiguraci.",
     )
     parser.add_argument(
         "--api-key",
@@ -176,11 +177,11 @@ def main() -> int:
 
     if args.api_url is not None:
         api_url = args.api_url.strip()
-    elif (env_api_url := read_optional_env(ENV_API_URL)) is not None:
-        api_url = env_api_url
     else:
         if args.base_url is not None:
             base_url = args.base_url.strip()
+        elif (env_api_url := read_optional_env(ENV_API_URL)) is not None:
+            base_url = env_api_url
         else:
             config = read_config_if_needed(config_path, config)
             base_url = config.base_url
