@@ -1,6 +1,6 @@
 [Úvod](../../../index.md) > [Návody](../../../guides/index.md) / [Kurátor](../../curator/index.md) / [Úlohy](index.md)
 
-# Konfigurace Web klienta
+# Konfigurace Web klienta (v3)
 
 Konfiguruje se Web klient a jeho zdroje (resources)
 
@@ -9,7 +9,7 @@ Konfiguruje se Web klient a jeho zdroje (resources)
 ## Postup
 
 1. Otevřete **Admin klienta**
-2. Přejděte do sekce **Nastavení klienta**
+2. Přejděte do sekce **Nastavení klienta** pres ikonu nastavení (ozubené kolečko)
 3. Zobrazí se záložky:
     - tab **Konfigurace**
     - tab **Zdroje klienta**
