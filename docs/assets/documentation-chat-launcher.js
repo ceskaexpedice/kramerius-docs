@@ -2,8 +2,7 @@
   "use strict";
 
   const chatElementName = "documentation-chat";
-  // const chatApiUrl = "https://ai-api.inovatika.dev/documentation-chat-api/";
-  const chatApiUrl = "http://localhost:8080/documentation-chat-api/";
+  const chatApiUrl = window.documentationChatApiUrl ?? "https://ai-api.inovatika.dev/documentation-chat-api/";
   const chatStateChangeEventName = "documentation-chat-state-change";
   const scrollLockClassName = "doc-chat-open";
   const launcherScript = document.currentScript;

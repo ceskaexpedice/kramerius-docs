@@ -1,0 +1,5 @@
+INHERIT: mkdocs.yml
+
+extra_javascript:
+  - assets/documentation-chat-local-config.js
+  - assets/documentation-chat-launcher.js
